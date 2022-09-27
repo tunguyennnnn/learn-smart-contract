@@ -1,15 +1,16 @@
-const { ethers, run, network } = require('hardhat');
+import * as hardhat from 'hardhat';
+
 require('@nomiclabs/hardhat-etherscan');
 require('dotenv').config();
 
-async function verify(contractAddress, args) {
+async function verify(contractAddress: string, args: any[]) {
   console.log('veriyfing contract....');
   try {
-    await run('verify:verify', {
+    await hardhat.run('verify:verify', {
       address: contractAddress,
       constructorArguments: args,
     });
-  } catch (e) {
+  } catch (e: any) {
     if (e.message.toLowerCase().includes('already verified')) {
       console.log('Already verified!');
     } else {
@@ -19,7 +20,9 @@ async function verify(contractAddress, args) {
 }
 
 async function main() {
-  const simpleStorageFactory = await ethers.getContractFactory('SimpleStorage');
+  const simpleStorageFactory = await hardhat.ethers.getContractFactory(
+    'SimpleStorage'
+  );
 
   const simpleStorage = await simpleStorageFactory.deploy();
   await simpleStorage.deployed();
@@ -28,9 +31,9 @@ async function main() {
 
   console.log('Desploy contract to', simpleStorage.address);
 
-  console.log(network.config);
+  console.log(hardhat.network.config);
 
-  if (network.config.chainId === 4 && process.env.ETH_SCAN_API_KEY) {
+  if (hardhat.network.config.chainId === 4 && process.env.ETH_SCAN_API_KEY) {
     await simpleStorage.deployTransaction.wait(6);
     await verify(simpleStorage.address, []);
   }

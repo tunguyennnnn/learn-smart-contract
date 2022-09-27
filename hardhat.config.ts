@@ -1,9 +1,10 @@
-require('@nomicfoundation/hardhat-toolbox');
+import '@nomicfoundation/hardhat-toolbox';
+import '@nomiclabs/hardhat-etherscan';
+import 'hardhat-gas-reporter';
+import './tasks/block-number';
+import 'solidity-coverage';
+import '@typechain/hardhat';
 require('dotenv').config();
-require('@nomiclabs/hardhat-etherscan');
-require('hardhat-gas-reporter');
-require('./tasks/block-number');
-require('solidity-coverage');
 
 const rinkebyURL = process.env.RINKEBY_RPC_URL;
 const rinkebyPrivateKey = process.env.PRIVATE_KEY;
